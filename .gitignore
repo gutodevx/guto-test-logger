@@ -1,0 +1,24 @@
+﻿# Saidas locais e exportacoes reais
+/outputs/
+/exports/
+/local-data/
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+
+# Configuracoes e credenciais locais
+.env
+.env.*
+!.env.example
+
+# Logs
+*.log
+
+# Editores e sistema operacional
+.vscode/
+.idea/
+Thumbs.db
+.DS_Store
