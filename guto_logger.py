@@ -113,7 +113,7 @@ def main():
     outroot.mkdir(parents=True,exist_ok=True)
     target=outroot/test
     if target.exists():
-        if not args.force: raise FileExistsError(f'{target} ja existe; nenhum arquivo sera substituido. Use -NovaVersao.')
+        if not args.force: raise FileExistsError(f'{target} ja existe; nenhum arquivo sera substituido. Use --force para criar outra versao sem substituir a anterior.')
         i=2
         while (outroot/f'{test}-V{i:02d}').exists():i+=1
         target=outroot/f'{test}-V{i:02d}'

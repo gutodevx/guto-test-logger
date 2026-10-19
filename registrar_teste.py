@@ -63,7 +63,17 @@ def main():
     checks = (meta.get('logger_version') == '0.3', meta.get('session_id') == args.session_id,
               meta.get('test_id') == test, meta.get('source_format') == 'jsonl',
               meta.get('source_sha256') == digest == copy_digest,
-              len(list(evidence.iterdir())) == 7, not (evidence / 'INCOMPLETO.txt').exists())
+              {p.name for p in evidence.iterdir()} == {
+                  f'{test}-PROMPT.md',
+                  f'{test}-RESPOSTA.md',
+                  f'{test}-FERRAMENTAS.json',
+                  f'{test}-METADADOS.json',
+                  f'{test}-AVALIACAO.md',
+                  f'{test}-ORIGEM-SHA256.txt',
+                  f'{test}-ORIGEM.jsonl',
+              },
+              all(p.is_file() for p in evidence.iterdir()),
+              not (evidence / 'INCOMPLETO.txt').exists())
     if args.message_id:
         checks += (str(meta.get('user_message_id')) == args.message_id,)
     if not all(checks):

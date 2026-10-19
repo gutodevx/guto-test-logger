@@ -1,4 +1,4 @@
-﻿# GUTO Test Logger
+# GUTO Test Logger
 
 Ferramenta experimental em Python para organizar evidências de testes de agentes a partir de exportações de sessões do Hermes.
 
@@ -104,10 +104,28 @@ As pastas `outputs/`, `exports/` e `local-data/` estão no `.gitignore`. Isso n�
 - Não avalia automaticamente a qualidade das respostas.
 - Um teste de demonstração bem-sucedido não valida todos os cenários.
 
+## Testes automatizados
+
+Na pasta do projeto, execute:
+
+    py -3 -m unittest discover -s tests -v
+
+Sete testes passaram localmente no Windows com Python 3.14.7:
+
+- Extracao com preservacao da origem e conferencia de SHA256.
+- Recusa de sobrescrita de evidencias existentes.
+- Rejeicao de chamada de ferramenta sem resultado.
+- Rejeicao de trecho com mensagem compactada.
+- Geracao do recibo pelo Registrador.
+- Rejeicao de nome de arquivo incorreto.
+- Rejeicao de diretorio no lugar de arquivo de evidencia.
+
+Os testes do Registrador simulam a exportacao do Hermes e executam o Logger real. Nao validam a CLI real do Hermes.
+
 ## Próximos passos
 
-- Adicionar testes automatizados de sucesso e rejeição.
-- Conferir os nomes esperados dos arquivos no Registrador.
+- Ampliar a cobertura para outros formatos e cenários de falha.
+- Validar a integração com versões identificadas da CLI do Hermes.
 - Melhorar mensagens de erro e documentação de compatibilidade.
 
 ## Licença
