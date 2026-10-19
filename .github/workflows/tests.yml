@@ -1,0 +1,36 @@
+﻿name: Testes Python
+
+on:
+  push:
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  tests:
+    name: Testes - ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 10
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+
+    steps:
+      - name: Obter codigo
+        uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+
+      - name: Preparar Python
+        uses: actions/setup-python@v7
+        with:
+          python-version: '3.14'
+
+      - name: Conferir sintaxe
+        run: python -m py_compile guto_logger.py registrar_teste.py
+
+      - name: Executar testes
+        run: python -m unittest discover -s tests -v
