@@ -1,14 +1,28 @@
 # GUTO Test Logger
 
-Ferramenta experimental em Python para organizar evidências de testes de agentes a partir de exportações de sessões do Hermes.
+[![Testes Python](https://github.com/gutodevx/guto-test-logger/actions/workflows/tests.yml/badge.svg?branch=main)](https://github.com/gutodevx/guto-test-logger/actions/workflows/tests.yml)
 
-Parte do laboratório GUTO AI, desenvolvido por Augusto Sales.
+Ferramenta em Python que estou desenvolvendo para organizar os registros dos testes que faço com agentes de inteligência artificial.
 
-## Problema
+O projeto faz parte do laboratório GUTO AI e está sendo desenvolvido por Augusto Sales, com apoio de IA na construção do código, nas revisões e no aprendizado.
 
-Revisar conversas de agentes manualmente dificulta localizar o prompt de um teste, sua resposta e as ferramentas utilizadas.
+## Por que criei
 
-O Logger extrai esse trecho e organiza arquivos para apoiar a revisão humana, preservando uma cópia integral da exportação com SHA256.
+Durante os testes com agentes, precisei conferir mensagens, respostas e ferramentas utilizadas em uma conversa. Fazer essa revisão manualmente dificulta encontrar e organizar as informações de cada teste.
+
+O GUTO Test Logger ajuda nesse processo: lê uma conversa exportada do Hermes, separa o trecho do teste e gera arquivos para facilitar a conferência.
+
+## Como funciona
+
+1. Recebe um arquivo de conversa exportado do Hermes.
+2. Localiza a mensagem usada no teste e as respostas relacionadas.
+3. Separa a resposta final e os registros das ferramentas utilizadas.
+4. Guarda uma cópia completa da conversa exportada e calcula seu SHA256.
+5. Cria um arquivo para a avaliação humana do teste.
+
+O SHA256 funciona como uma identificação do conteúdo do arquivo e ajuda a conferir se ele foi alterado.
+
+A ferramenta organiza registros existentes. Ela não executa o agente nem as ferramentas que aparecem na conversa.
 
 ## Componentes
 
@@ -106,21 +120,33 @@ As pastas `outputs/`, `exports/` e `local-data/` estão no `.gitignore`. Isso n�
 
 ## Testes automatizados
 
-Na pasta do projeto, execute:
+O projeto tem sete testes automáticos para conferir a extração dos registros, a geração do recibo e algumas situações em que a execução deve ser recusada.
+
+Na pasta do projeto, execute no Windows:
 
     py -3 -m unittest discover -s tests -v
 
-Sete testes passaram localmente no Windows com Python 3.14.7:
+No Linux:
 
-- Extracao com preservacao da origem e conferencia de SHA256.
-- Recusa de sobrescrita de evidencias existentes.
-- Rejeicao de chamada de ferramenta sem resultado.
-- Rejeicao de trecho com mensagem compactada.
-- Geracao do recibo pelo Registrador.
-- Rejeicao de nome de arquivo incorreto.
-- Rejeicao de diretorio no lugar de arquivo de evidencia.
+    python3 -m unittest discover -s tests -v
 
-Os testes do Registrador simulam a exportacao do Hermes e executam o Logger real. Nao validam a CLI real do Hermes.
+Os testes verificam:
+
+- Extração dos registros e conferência do SHA256.
+- Recusa de sobrescrita de registros existentes.
+- Rejeição de chamada de ferramenta sem resultado.
+- Rejeição de trecho com mensagem compactada.
+- Geração do recibo pelo Registrador.
+- Rejeição de arquivo com nome incorreto.
+- Rejeição de pasta no lugar de um arquivo esperado.
+
+O GitHub Actions executa esses testes com Python 3.14 no Windows e no Linux a cada envio de alterações e nos pull requests para a main. Ele também verifica se os scripts têm erros de sintaxe.
+
+O indicador no início deste README mostra o resultado da automação na main. Para consultar cada execução e seus detalhes, abra a aba Actions.
+
+Nos testes do Registrador, a exportação do Hermes é simulada. Esses testes executam o Logger real, mas não executam o Hermes de verdade.
+
+Os testes ajudam a identificar problemas nos cenários que foram programados. Eles não garantem que o projeto esteja livre de falhas nem avaliam se a resposta do agente está correta.
 
 ## Próximos passos
 
